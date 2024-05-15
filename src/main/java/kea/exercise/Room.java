@@ -1,14 +1,37 @@
 package kea.exercise;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Room {
-    private boolean visited = false;
+
     private String name;
     private Room northRoom = null;
     private Room southRoom = null;
     private Room eastRoom = null;
     private Room westRoom = null;
     private String longDescription;
-    private String shortDescriptio;
+    private String shortDescription;
+    private boolean visited = false;
+
+    private List<Item> items = new ArrayList<>();
+
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void addItem(Item item) {
+        this.items.add(item);
+    }
 
     public boolean isVisited() {
         return visited;
@@ -27,15 +50,22 @@ public class Room {
     }
 
     public String getShortDescriptio() {
-        return shortDescriptio;
+        return shortDescription;
     }
 
-    public void setShortDescriptio(String shortDescriptio) {
-        this.shortDescriptio = shortDescriptio;
+    public void setShortDescriptio(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     public Room(String name) {
         this.name = name;
+    }
+
+    public Room(String name, Item item, String longDescription, String shortDescription) {
+        this.name = name;
+        this.items.add(item);
+        this.shortDescription = shortDescription;
+        this.longDescription = longDescription;
     }
 
     public String getName() {
@@ -87,5 +117,18 @@ public class Room {
         this.westRoom = westRoom;
         if (westRoom.getEastRoom() == null) {
         westRoom.setEastRoom(this);}
+    }
+
+    public Item findItem(String itemName) {
+        for (Item item : items) {
+            if (item.getShortName().equals(itemName) || item.getLongName().equals(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void removeItem(Item item) {
+        items.remove(item);
     }
 }

@@ -1,5 +1,7 @@
 package kea.exercise;
 
+import java.util.List;
+
 public class Adventure {
 
     private Room[] allRooms = new Room[9];
@@ -10,6 +12,7 @@ public class Adventure {
     public Adventure(){}
 
     public void start(){
+        map.createItems();
         allRooms = map.createRooms(allRooms);
         player = new Player(allRooms[0]);
         ui.printWelcome();
@@ -39,19 +42,31 @@ public class Adventure {
 //        return adjacentRooms;
 //    }
 
-    public void moveEast() {
-        player.moveEast();
+    public String moveEast() {
+       return player.moveEast();
     }
 
-    public void moveNorth() {
-        player.moveNorth();
+    public String moveNorth() {
+        return player.moveNorth();
     }
 
-    public void moveSouth() {
-        player.moveSouth();
+    public String moveSouth() {
+        return player.moveSouth();
     }
 
-    public void moveWest() {
-        player.moveWest();
+    public String moveWest() {
+        return player.moveWest();
+    }
+
+    public String takeItem(String command) {
+        return player.takeItem(command);
+    }
+
+    public String dropItem(String itemToDrop) {
+        return player.dropItem(itemToDrop);
+    }
+
+    public List<Item> getCarriedItems() {
+        return player.getCarriedItems();
     }
 }
