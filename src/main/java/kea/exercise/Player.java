@@ -3,36 +3,18 @@ package kea.exercise;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements ItemCarrier {
     private Room currentRoom;
-
-    private List<Item> carriedItems = new ArrayList<>();
 
     public Player (Room initialRoom) {
         currentRoom = initialRoom;
     }
 
-    public void setCurrentRoom(Room currentRoom) {
-        this.currentRoom = currentRoom;
-    }
-
-    @Override
-    public String toString() {
-        return carriedItems.toString();
-    }
-
-    public List<Item> getCarriedItems() {
-        return carriedItems;
-    }
-
-    public void setCarriedItems(List<Item> carriedItems) {
-        this.carriedItems = carriedItems;
-    }
 
     public String takeItem(String itemName) {
         Item item = currentRoom.findItem(itemName);
         if (item != null) {
-            carriedItems.add(item);
+            items.add(item);
             currentRoom.removeItem(item);
             return "You picked up the " + item.getLongName();
         } else {
@@ -43,25 +25,12 @@ public class Player {
     public String dropItem(String itemName) {
         Item item = findItem(itemName);
         if (item != null) {
-            carriedItems.remove(item);
+            items.remove(item);
             currentRoom.addItem(item);
             return "You dropped the " + item.getLongName();
         } else {
             return "You are not carrying any item called " + itemName;
         }
-    }
-
-    private Item findItem(String itemName) {
-        for (Item item : carriedItems) {
-            if (item.getShortName().equals(itemName) || item.getLongName().equals(itemName)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    public void removeItem(Item item) {
-        carriedItems.remove(item);
     }
 
     public Room getCurrentRoom() {

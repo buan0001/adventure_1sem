@@ -33,6 +33,10 @@ public class Room {
         this.items.add(item);
     }
 
+    public void addItem(String itemName, String itemDescription) {
+        addItem(new Item(itemName, itemDescription));
+    }
+
     public boolean isVisited() {
         return visited;
     }

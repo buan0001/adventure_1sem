@@ -67,6 +67,6 @@ public class Adventure {
     }
 
     public List<Item> getCarriedItems() {
-        return player.getCarriedItems();
+        return player.getItems();
     }
 }
