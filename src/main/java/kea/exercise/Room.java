@@ -3,7 +3,7 @@ package kea.exercise;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
+public class Room extends ItemCarrier {
 
     private String name;
     private Room northRoom = null;
@@ -14,9 +14,6 @@ public class Room {
     private String shortDescription;
     private boolean visited = false;
 
-    private List<Item> items = new ArrayList<>();
-
-
     public String getShortDescription() {
         return shortDescription;
     }
@@ -25,45 +22,6 @@ public class Room {
         this.shortDescription = shortDescription;
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void addItem(Item item) {
-        this.items.add(item);
-    }
-
-    public void addItem(String itemName, String itemDescription) {
-        addItem(new Item(itemName, itemDescription));
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
-    }
-
-    public String getLongDescription() {
-        return longDescription;
-    }
-
-    public void setLongDescription(String longDescription) {
-        this.longDescription = longDescription;
-    }
-
-    public String getShortDescriptio() {
-        return shortDescription;
-    }
-
-    public void setShortDescriptio(String shortDescription) {
-        this.shortDescription = shortDescription;
-    }
-
-    public Room(String name) {
-        this.name = name;
-    }
 
     public Room(String name, Item item, String longDescription, String shortDescription) {
         this.name = name;
@@ -123,16 +81,25 @@ public class Room {
         westRoom.setEastRoom(this);}
     }
 
-    public Item findItem(String itemName) {
-        for (Item item : items) {
-            if (item.getShortName().equals(itemName) || item.getLongName().equals(itemName)) {
-                return item;
-            }
-        }
-        return null;
+
+    public boolean isVisited() {
+        return visited;
     }
 
-    public void removeItem(Item item) {
-        items.remove(item);
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public void setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
+    }
+
+    public Room(String name) {
+        this.name = name;
+    }
+
 }

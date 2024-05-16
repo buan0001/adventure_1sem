@@ -69,4 +69,24 @@ public class Adventure {
     public List<Item> getCarriedItems() {
         return player.getItems();
     }
+
+    public String getCarriedItemNames(String shortOrLong){
+        return player.getItemNames(shortOrLong);
+    }
+
+    public String getCarriedItemNames(){
+        return player.getItemNames();
+    }
+
+    public String getRoomItemNames(){
+        return player.getCurrentRoom().getItemNames();
+    }
+
+    public String eatItem(String itemToEat) {
+        return player.attemptToEatItem(itemToEat);
+    }
+
+    public String reallyEat(String itemToEat) {
+        return player.reallyEat(itemToEat);
+    }
 }

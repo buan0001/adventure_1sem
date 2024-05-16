@@ -1,6 +1,7 @@
 package kea.exercise;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -13,48 +14,54 @@ public class UserInterface {
     }
 
     public void printWelcome() {
+        System.out.println("__________________");
         System.out.println("Welcome to the adventure game!");
         System.out.println("You are in a maze of twisty little passages, all alike.");
+        System.out.println("__________________");
         printInstructions();
 
     }
 
     private void printInstructions() {
+        System.out.println();
         System.out.println("You can move around by typing commands like 'go north', 'go south', 'go east', 'go west'.");
         System.out.println("Alternatively type 'go n', 'go s', 'go e', 'go w'.");
         System.out.println("Type 'look' to see where you are.");
-        System.out.println("Type 'inventory' or 'inv' to see the items you're currently carrying ");
+        System.out.println("Type 'inventory' or 'inv' to see the items you're currently carrying. If you only wish to see the short names of the items, type 'inv s'.");
         System.out.println("Type 'quit' to quit the game.");
         System.out.println("Type 'help' to see these instructions again.");
+        System.out.println();
     }
 
     private void printRoomEntryMessage() {
-        System.out.println("You are in " + adventure.getCurrentRoom().getLongDescription());
+        String msg = adventure.getCurrentRoom().isVisited() ? adventure.getCurrentRoom().getShortDescription() : adventure.getCurrentRoom().getLongDescription();
+        System.out.println("You are in " + msg);
         printGroundItems();
         System.out.println("Where do you want to go?");
     }
 
     private void printGroundItems() {
-        if (!adventure.getCurrentRoom().getItems().isEmpty()) {
-            System.out.println("These items are on the ground: ");
-            for (Item item : adventure.getCurrentRoom().getItems()) {
-                System.out.println(item.getLongName());
-            }
+        String msg = adventure.getRoomItemNames();
+        if (Objects.equals(msg, "")){
+            System.out.println("There are no items in this room");
         }
         else {
-            System.out.println("There are no items in this room");
+            System.out.println("These items are on the ground: ");
+            System.out.println(msg);
         }
     }
 
-    private void printCarriedItems(List<Item> carriedItems) {
-        if (!carriedItems.isEmpty()) {
-            System.out.println("These items are in your inventory: ");
-            for (Item item : carriedItems) {
-                System.out.println(item.getLongName());
-            }
+    private void printCarriedItems(){
+        printCarriedItems("l");
+    }
+    private void printCarriedItems(String str) {
+        String msg = adventure.getCarriedItemNames(str);
+        if (Objects.equals(msg, "")){
+            System.out.println("You are not carrying any items");
         }
         else {
-            System.out.println("You are not carrying any items right now");
+            System.out.println("These items are in your inventory: ");
+            System.out.println(msg);
         }
     }
 
@@ -76,9 +83,14 @@ public class UserInterface {
 
             boolean isTake = command.length() >3 &&  command.substring(0, 4).equalsIgnoreCase("take");
             boolean isDrop = command.length() >3 && command.substring(0, 4).equalsIgnoreCase("drop");
+            boolean isEat = command.length() >2 && command.substring(0, 3).equalsIgnoreCase("eat");
+            boolean isShortInventory = command.length() > 4 && command.substring(0,3).equalsIgnoreCase("inv") && command.substring(3,4).equalsIgnoreCase(" ");
+
             if (isTake) {
-                System.out.println("take command:");
-                System.out.println(command);
+                if (command.length() < 5) {
+                    System.out.println("You need to specify what you want to take");
+                    continue;
+                }
                 String itemToPickUp = command.substring(5);
                 System.out.println("attempting to take item: " + itemToPickUp);
                 message = adventure.takeItem(itemToPickUp);
@@ -86,12 +98,46 @@ public class UserInterface {
                 continue;
             }
             else if (isDrop) {
-                System.out.println("drop command:");
-                System.out.println(command);
+                if (command.length() < 5) {
+                    System.out.println("You need to specify what you want to drop");
+                    continue;
+                }
                 String itemToDrop = command.substring(5);
                 System.out.println("attempting to take item: " + itemToDrop);
                 message = adventure.dropItem(itemToDrop);
                 System.out.println(message);
+                continue;
+            }
+            else if (isEat) {
+                if (command.length() < 4) {
+                    System.out.println("You need to specify what you want to eat");
+                    continue;
+                }
+                String itemToEat = command.substring(4);
+                System.out.println("attempting to eat item: " + itemToEat);
+                message = adventure.eatItem(itemToEat);
+                System.out.println(message);
+                if (message == null) {
+                    System.out.println("This piece of food doesn't look nice. It might hurt you in the process. Do you want to eat it anyway?");
+                    System.out.println("answer with 'Y'/'N'");
+                    String answer = scanner.nextLine();
+                    System.out.println("answer " + answer);
+                    if (answer.equalsIgnoreCase("y")) {
+                        System.out.println("Yuck!");
+                        System.out.println(adventure.reallyEat(itemToEat));
+                    }
+                    else {
+                        System.out.println("Perhaps a wise choice...");
+                    }
+                }
+
+                continue;
+            }
+            else if (isShortInventory) {
+
+                System.out.println("printing short inventory");
+                printCarriedItems("s");
+//                System.out.println(adventure.getCarriedItemNames(command.substring(4))) ;
                 continue;
             }
 
@@ -141,10 +187,13 @@ public class UserInterface {
                     System.out.println("You are in " + adventure.getCurrentRoom().getName());
                     printGroundItems();
                     break;
-
                 case "inventory", "inv":
-                    printCarriedItems(adventure.getCarriedItems()) ;
+                    System.out.println("printing INVENTORY");
+                    printCarriedItems();
                     break;
+
+
+
                 default:
                     System.out.println("I don't understand that command.");
             }
