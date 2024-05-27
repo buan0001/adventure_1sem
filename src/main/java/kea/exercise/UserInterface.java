@@ -57,7 +57,7 @@ public class UserInterface {
                     break;
                     case "look":
                     System.out.println("You are in " + adventure.getCurrentRoom().getName());
-
+                    break;
                 default:
                     System.out.println("I don't understand that command.");
             }
