@@ -9,25 +9,29 @@ public class Player extends ItemCarrier {
     }
 
 
-    public String takeItem(String itemName) {
+    public Item takeItem(String itemName) {
         Item item = currentRoom.findItem(itemName);
         if (item != null) {
             items.add(item);
             currentRoom.removeItem(item);
-            return "You picked up " + item.getLongName();
+            return item;
+            //return "You picked up " + item.getLongName();
         } else {
-            return "There is no " + itemName + " here.";
+            return null;
+            //return "There is no " + itemName + " here.";
         }
     }
 
-    public String dropItem(String itemName) {
+    public Item dropItem(String itemName) {
         Item item = findItem(itemName);
         if (item != null) {
             items.remove(item);
             currentRoom.addItem(item);
-            return "You dropped the " + item.getLongName();
+            return item;
+            //return "You dropped the " + item.getLongName();
         } else {
-            return "You are not carrying any item called " + itemName;
+            return null;
+            //return "You are not carrying any item called " + itemName;
         }
     }
 

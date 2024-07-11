@@ -58,11 +58,11 @@ public class Adventure {
         return player.moveWest();
     }
 
-    public String takeItem(String command) {
+    public Item takeItem(String command) {
         return player.takeItem(command);
     }
 
-    public String dropItem(String itemToDrop) {
+    public Item dropItem(String itemToDrop) {
         return player.dropItem(itemToDrop);
     }
 

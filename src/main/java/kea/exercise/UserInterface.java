@@ -56,7 +56,7 @@ public class UserInterface {
     }
     private void printCarriedItems(String str) {
         String msg = adventure.getCarriedItemNames(str);
-        if (Objects.equals(msg, "")){
+        if (msg == null){
             System.out.println("You are not carrying any items");
         }
         else {
@@ -93,8 +93,13 @@ public class UserInterface {
                 }
                 String itemToPickUp = command.substring(5);
                 System.out.println("attempting to take item: " + itemToPickUp);
-                message = adventure.takeItem(itemToPickUp);
-                System.out.println(message);
+                Item takenItem = adventure.takeItem(itemToPickUp);
+                if (takenItem != null) {
+                    System.out.println("You picked up: " + takenItem.getLongName());
+                }
+                else {
+                    System.out.println("There is no " + itemToPickUp + " here.");
+                }
                 continue;
             }
             else if (isDrop) {
@@ -104,8 +109,14 @@ public class UserInterface {
                 }
                 String itemToDrop = command.substring(5);
                 System.out.println("attempting to take item: " + itemToDrop);
-                message = adventure.dropItem(itemToDrop);
-                System.out.println(message);
+                Item droppedItem = adventure.dropItem(itemToDrop);
+                if (droppedItem != null) {
+                    System.out.println("You dropped the " + droppedItem.getLongName());
+                }
+                else {
+                    System.out.println("You are not carrying any item called " + itemToDrop);
+                }
+
                 continue;
             }
             else if (isEat) {

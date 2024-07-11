@@ -41,7 +41,7 @@ public class Map {
         System.out.println(allRooms[7].getItems().getFirst().getShortName());
 
         allRooms[0].addItem(allItems.get(9));
-        allRooms[0].addItem( "A long, ancient stick", "stick");
+        //allRooms[0].addItem( "A long, ancient stick", "stick");
         allRooms[0].addItem(allItems.get(10));
         allRooms[1].addItem(allItems.get(11));
         allRooms[1].addItem(allItems.get(12));

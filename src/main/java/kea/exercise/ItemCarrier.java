@@ -17,7 +17,7 @@ abstract class ItemCarrier {
     }
 
     protected List<Item> getItems() {
-        return items;
+        return this.items;
     }
 
     protected void removeItem(Item item) {
@@ -40,7 +40,7 @@ abstract class ItemCarrier {
         StringBuilder str = new StringBuilder();
         for (Item item : items) {
             if (items.isEmpty()) {
-                str.append("There are no items in this room");
+                return null;
             }
             String string = shortOrLong.equalsIgnoreCase("s") ? item.getShortName() : item.getLongName();
 
