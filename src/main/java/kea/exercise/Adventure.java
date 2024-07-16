@@ -14,6 +14,10 @@ public class Adventure {
     public void start(){
         map.createItems();
         allRooms = map.createRooms(allRooms);
+
+        for (Room room : allRooms) {
+            System.out.println(room.getAllAdjacentRooms());
+        }
         player = new Player(allRooms[0]);
         ui.printWelcome();
         ui.startGame();
@@ -82,11 +86,15 @@ public class Adventure {
         return player.getCurrentRoom().getItemNames();
     }
 
-    public String eatItem(String itemToEat) {
+    public Integer eatItem(String itemToEat) {
         return player.attemptToEatItem(itemToEat);
     }
 
-    public String reallyEat(String itemToEat) {
+    public Integer reallyEat(String itemToEat) {
         return player.reallyEat(itemToEat);
+    }
+
+    public int getHealth() {
+        return player.getHealth();
     }
 }

@@ -1,5 +1,8 @@
 package kea.exercise;
 
+import kea.exercise.exceptions.ItemNotFoodException;
+import kea.exercise.exceptions.ItemNotFoundException;
+
 public class Player extends ItemCarrier {
     private Room currentRoom;
 
@@ -88,13 +91,15 @@ public class Player extends ItemCarrier {
         }
     }
 
-    public String attemptToEatItem(String itemToEat) {
+    public Integer attemptToEatItem(String itemToEat) {
         Item item = findItem(itemToEat);
         if (item == null) {
-            return "You are not carrying any item called " + itemToEat;
+            throw new ItemNotFoundException();
+
         }
         else if (!(item instanceof Food)) {
-            return "You can't eat that - it's not a food";
+
+            throw new ItemNotFoodException();
         }
         else {
             Food food = (Food) item;
@@ -112,13 +117,14 @@ public class Player extends ItemCarrier {
         this.health += itemToEat.getHealing();
     }
 
-    public String reallyEat(String itemToEat) {
+    public int reallyEat(String itemToEat) {
         Food food = (Food) findItem(itemToEat);
         return reallyEat(food);
     }
-    public String reallyEat(Food foodToEat) {
+    public int reallyEat(Food foodToEat) {
         calculateHealth(foodToEat);
         items.remove(foodToEat);
-        return "You eat the " + foodToEat.getShortName() + ". Your health is now " + health;
+        return health;
+        //return "You eat the " + foodToEat.getShortName() + ". Your health is now " + health;
     }
 }

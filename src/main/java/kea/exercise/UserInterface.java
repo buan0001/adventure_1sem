@@ -1,5 +1,8 @@
 package kea.exercise;
 
+import kea.exercise.exceptions.ItemNotFoodException;
+import kea.exercise.exceptions.ItemNotFoundException;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -42,24 +45,23 @@ public class UserInterface {
 
     private void printGroundItems() {
         String msg = adventure.getRoomItemNames();
-        if (Objects.equals(msg, "")){
+        if (Objects.equals(msg, "")) {
             System.out.println("There are no items in this room");
-        }
-        else {
+        } else {
             System.out.println("These items are on the ground: ");
             System.out.println(msg);
         }
     }
 
-    private void printCarriedItems(){
+    private void printCarriedItems() {
         printCarriedItems("l");
     }
+
     private void printCarriedItems(String str) {
         String msg = adventure.getCarriedItemNames(str);
-        if (msg == null){
+        if (msg == null) {
             System.out.println("You are not carrying any items");
-        }
-        else {
+        } else {
             System.out.println("These items are in your inventory: ");
             System.out.println(msg);
         }
@@ -67,6 +69,14 @@ public class UserInterface {
 
     private void printFailedToMove() {
         System.out.println("You can't move that direction");
+    }
+
+    private void printUpdatedHp(int hp) {
+        System.out.println("Your health is now " + hp);
+    }
+
+    private int getDifferenceBetweenNumbers(int i1, int i2) {
+        return i1 - i2;
     }
 
     public void startGame() {
@@ -81,10 +91,10 @@ public class UserInterface {
                 break;
             }
 
-            boolean isTake = command.length() >3 &&  command.substring(0, 4).equalsIgnoreCase("take");
-            boolean isDrop = command.length() >3 && command.substring(0, 4).equalsIgnoreCase("drop");
-            boolean isEat = command.length() >2 && command.substring(0, 3).equalsIgnoreCase("eat");
-            boolean isShortInventory = command.length() > 4 && command.substring(0,3).equalsIgnoreCase("inv") && command.substring(3,4).equalsIgnoreCase(" ");
+            boolean isTake = command.length() > 3 && command.substring(0, 4).equalsIgnoreCase("take");
+            boolean isDrop = command.length() > 3 && command.substring(0, 4).equalsIgnoreCase("drop");
+            boolean isEat = command.length() > 2 && command.substring(0, 3).equalsIgnoreCase("eat");
+            boolean isShortInventory = command.length() > 4 && command.substring(0, 3).equalsIgnoreCase("inv") && command.substring(3, 4).equalsIgnoreCase(" ");
 
             if (isTake) {
                 if (command.length() < 5) {
@@ -96,13 +106,11 @@ public class UserInterface {
                 Item takenItem = adventure.takeItem(itemToPickUp);
                 if (takenItem != null) {
                     System.out.println("You picked up: " + takenItem.getLongName());
-                }
-                else {
+                } else {
                     System.out.println("There is no " + itemToPickUp + " here.");
                 }
                 continue;
-            }
-            else if (isDrop) {
+            } else if (isDrop) {
                 if (command.length() < 5) {
                     System.out.println("You need to specify what you want to drop");
                     continue;
@@ -112,39 +120,53 @@ public class UserInterface {
                 Item droppedItem = adventure.dropItem(itemToDrop);
                 if (droppedItem != null) {
                     System.out.println("You dropped the " + droppedItem.getLongName());
-                }
-                else {
+                } else {
                     System.out.println("You are not carrying any item called " + itemToDrop);
                 }
 
                 continue;
-            }
-            else if (isEat) {
+            } else if (isEat) {
                 if (command.length() < 4) {
                     System.out.println("You need to specify what you want to eat");
                     continue;
                 }
+
                 String itemToEat = command.substring(4);
-                System.out.println("attempting to eat item: " + itemToEat);
-                message = adventure.eatItem(itemToEat);
-                System.out.println(message);
-                if (message == null) {
-                    System.out.println("This piece of food doesn't look nice. It might hurt you in the process. Do you want to eat it anyway?");
-                    System.out.println("answer with 'Y'/'N'");
-                    String answer = scanner.nextLine();
-                    System.out.println("answer " + answer);
-                    if (answer.equalsIgnoreCase("y")) {
-                        System.out.println("Yuck!");
-                        System.out.println(adventure.reallyEat(itemToEat));
+                try {
+                    System.out.println("attempting to eat item: " + itemToEat);
+
+                    int startHp = adventure.getHealth();
+
+                    Integer newHealth = adventure.eatItem(itemToEat);
+
+                    if (newHealth == null) {
+                        System.out.println("This piece of food doesn't look nice. It might hurt you in the process. Do you want to eat it anyway?");
+                        System.out.println("answer with 'Y'/'N'");
+                        String answer = scanner.nextLine();
+                        // System.out.println("answer " + answer);
+                        if (answer.equalsIgnoreCase("y")) {
+                            System.out.println("Yuck!");
+                            System.out.println("That tasted awful...");
+                            Integer updatedHp = adventure.reallyEat(itemToEat);
+                            System.out.println("You lost " + getDifferenceBetweenNumbers(startHp, updatedHp) + "hp");
+                            printUpdatedHp(updatedHp);
+                        } else {
+                            System.out.println("Perhaps a wise choice...");
+                        }
+                    } else {
+                        System.out.println("You eat the " + itemToEat);
+                        System.out.println("That was nice. You healed " + getDifferenceBetweenNumbers(newHealth, startHp));
+                        printUpdatedHp(newHealth);
                     }
-                    else {
-                        System.out.println("Perhaps a wise choice...");
-                    }
+                } catch (ItemNotFoundException e) {
+                    System.out.println("You are not carrying any item called " + itemToEat);
+                } catch (ItemNotFoodException e) {
+                    System.out.println("You can't eat " + itemToEat + " - it's not a food");
                 }
 
+
                 continue;
-            }
-            else if (isShortInventory) {
+            } else if (isShortInventory) {
 
                 System.out.println("printing short inventory");
                 printCarriedItems("s");
@@ -202,7 +224,6 @@ public class UserInterface {
                     System.out.println("printing INVENTORY");
                     printCarriedItems();
                     break;
-
 
 
                 default:

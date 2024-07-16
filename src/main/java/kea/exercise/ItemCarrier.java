@@ -9,7 +9,7 @@ abstract class ItemCarrier {
 
     protected Item findItem(String itemName) {
         for (Item item : items) {
-            if (item.getShortName().equals(itemName) || item.getLongName().equals(itemName)) {
+            if (item.getShortName().equalsIgnoreCase(itemName) || item.getLongName().equalsIgnoreCase(itemName)) {
                 return item;
             }
         }

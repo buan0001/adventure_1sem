@@ -102,4 +102,29 @@ public class Room extends ItemCarrier {
         this.name = name;
     }
 
+    public String getAllAdjacentRooms() {
+        StringBuilder str = new StringBuilder();
+        str.append(this.getName()).append(" - ");
+
+
+        if (this.getNorthRoom() != null) {str.append("north: "); str.append(this.getNorthRoom().getName()).append(" ");}
+
+        if (this.getEastRoom() != null) {
+            str.append("east: ");
+            str.append(this.getEastRoom().getName()).append(" ");
+        }
+
+        if (this.getSouthRoom() != null) {
+            str.append("south: ");
+            str.append(this.getSouthRoom().getName()).append(" ");
+        }
+
+        if (this.getWestRoom() != null) {
+            str.append("west: ");
+            str.append(this.getWestRoom().getName());
+        }
+
+        return str.toString();
+    }
+
 }

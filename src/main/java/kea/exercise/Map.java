@@ -32,11 +32,11 @@ public class Map {
         allRooms[1] = new Room("Room 2", allItems.get(1), "a room with a table and a chair", "Table room");
         allRooms[2]= new Room("Room 3", allItems.get(2), "a room with a bed and a chest", "Bedroom");
         allRooms[3]= new Room("Room 4", allItems.get(3), "a room with a fireplace", "Fireplace room");
-        allRooms[4]= new Room("Room 5", allItems.get(4), "a room with a desk and a bookshelf", "Library");
+        allRooms[4]= new Room("Room 5", allItems.get(4), "a room with a desk and a bookshelf", "Study");
         allRooms[5]= new Room("Room 6", allItems.get(5), "a room with a table and a chair", "Table room");
         allRooms[6]= new Room("Room 7", allItems.get(6), "a room with a bed and a chest", "Bedroom");
         allRooms[7]= new Room("Room 8", allItems.get(7), "a room with a fireplace", "Fireplace room");
-        allRooms[8]= new Room("Room 9", allItems.get(8), "a room with a desk and a bookshelf", "Library");
+        allRooms[8]= new Room("Room 9", allItems.get(8), "a LOT of bookshelves full of dusty books", "Library");
 
         System.out.println(allRooms[7].getItems().getFirst().getShortName());
 
