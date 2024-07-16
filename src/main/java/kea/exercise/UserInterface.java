@@ -133,7 +133,7 @@ public class UserInterface {
 
                 String itemToEat = command.substring(4);
                 try {
-                    System.out.println("attempting to eat item: " + itemToEat);
+                    //System.out.println("attempting to eat item: " + itemToEat);
 
                     int startHp = adventure.getHealth();
 
@@ -174,39 +174,40 @@ public class UserInterface {
                 continue;
             }
 
+            boolean success;
             switch (command) {
                 case "go north",
                         "go n":
-                    message = adventure.moveNorth();
-                    if (message != null) {
-                        System.out.println(message);
+                    success = adventure.moveNorth();
+                    if (success) {
+                        System.out.println("You moved north");
                         printRoomEntryMessage();
                     } else {
                         printFailedToMove();
                     }
                     break;
                 case "go south", "go s":
-                    message = adventure.moveSouth();
-                    if (message != null) {
-                        System.out.println(message);
+                    success = adventure.moveSouth();
+                    if (success) {
+                        System.out.println("You moved south");
                         printRoomEntryMessage();
                     } else {
                         printFailedToMove();
                     }
                     break;
                 case "go east", "go e":
-                    message = adventure.moveEast();
-                    if (message != null) {
-                        System.out.println(message);
+                    success = adventure.moveEast();
+                    if (success) {
+                        System.out.println("You moved east");
                         printRoomEntryMessage();
                     } else {
                         printFailedToMove();
                     }
                     break;
                 case "go west", "go w":
-                    message = adventure.moveWest();
-                    if (message != null) {
-                        System.out.println(message);
+                    success = adventure.moveWest();
+                    if (success) {
+                        System.out.println("You moved west");
                         printRoomEntryMessage();
                     } else {
                         printFailedToMove();
@@ -224,7 +225,23 @@ public class UserInterface {
                     System.out.println("printing INVENTORY");
                     printCarriedItems();
                     break;
-
+                case "health", "hp":
+                    int currentHp = adventure.getHealth();
+                    System.out.println("HP: " + currentHp);
+                    if (currentHp <= 0) {
+                        System.out.println("You're supposed to be dead!");
+                    } else if (currentHp < 25) {
+                        System.out.println("Your health is looking dire. Avoid all danger");
+                    }
+                    else if (currentHp < 50) {
+                        System.out.println("You've taken quite a beating. Stay cautious");
+                    }
+                    else if (currentHp < 75) {
+                        System.out.println("You're starting to feel some pain");
+                    }
+                    else {
+                        System.out.println("You're still feeling a-okay. Nothing can stop you!");
+                    }
 
                 default:
                     System.out.println("I don't understand that command.");

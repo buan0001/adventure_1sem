@@ -46,19 +46,19 @@ public class Adventure {
 //        return adjacentRooms;
 //    }
 
-    public String moveEast() {
+    public boolean moveEast() {
        return player.moveEast();
     }
 
-    public String moveNorth() {
+    public boolean moveNorth() {
         return player.moveNorth();
     }
 
-    public String moveSouth() {
+    public boolean moveSouth() {
         return player.moveSouth();
     }
 
-    public String moveWest() {
+    public boolean moveWest() {
         return player.moveWest();
     }
 

@@ -6,7 +6,7 @@ import kea.exercise.exceptions.ItemNotFoundException;
 public class Player extends ItemCarrier {
     private Room currentRoom;
 
-    private int health = 50;
+    private int health = 100;
     public Player (Room initialRoom) {
         setCurrentRoom(initialRoom);
     }
@@ -55,39 +55,43 @@ public class Player extends ItemCarrier {
         this.health = health;
     }
 
-    public String moveNorth() {
+    public boolean moveNorth() {
         if(currentRoom.getNorthRoom() != null){
             setCurrentRoom(currentRoom.getNorthRoom());
-            return "You moved north.";
+            return true;
+            //return "You moved north.";
         } else {
-            return null;
+            return false;
         }
     }
 
-    public String moveSouth() {
+    public boolean moveSouth() {
         if(currentRoom.getSouthRoom() != null){
             setCurrentRoom(currentRoom.getSouthRoom());
-            return "You moved south.";
+            return true;
+            //return "You moved south.";
         } else {
-            return null;
+            return false;
         }
     }
 
-    public String moveEast() {
+    public boolean moveEast() {
         if(currentRoom.getEastRoom() != null){
             setCurrentRoom(currentRoom.getEastRoom());
-            return "You moved east.";
+            return true;
+            //return "You moved east.";
         } else {
-            return null;
+            return false;
         }
     }
 
-    public String moveWest() {
+    public boolean moveWest() {
         if(currentRoom.getWestRoom() != null){
             setCurrentRoom(currentRoom.getWestRoom());
-            return "You moved west.";
+            return true;
+            //return "You moved west.";
         } else {
-            return null;
+            return false;
         }
     }
 
@@ -95,14 +99,11 @@ public class Player extends ItemCarrier {
         Item item = findItem(itemToEat);
         if (item == null) {
             throw new ItemNotFoundException();
-
         }
-        else if (!(item instanceof Food)) {
-
+        else if (!(item instanceof Food food)) {
             throw new ItemNotFoodException();
         }
         else {
-            Food food = (Food) item;
             if (food.getHealing() < 0) {
                 return null;
             }
